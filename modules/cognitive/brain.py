@@ -6,14 +6,13 @@ sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '../..')
 
 from core.event_bus import bus
 
+from modules.action.executor import execute_command
+
 def handle_sensor_data(data):
-    """This is our callback function - what the brain does with the data."""
     accel = data.get("accelerometer")
-    print(f"[BRAIN] Processing sensor update: {accel}")
-    
-    # Simple logic: If the phone is tilted (example threshold)
-    if accel[2] < 9.0:
-        print("[BRAIN] Action Required: Phone movement detected!")
+    if accel and accel[2] < 9.0:
+        print("[BRAIN] Movement detected. Initiating response...")
+        execute_command("activate_alert")
 
 def initialize_brain():
     print("Cognitive module active: Brain is listening...")
